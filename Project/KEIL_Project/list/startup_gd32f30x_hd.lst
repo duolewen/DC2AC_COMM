@@ -575,11 +575,11 @@ ARM Macro Assembler    Page 9
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\obj\startup_gd32f30x_hd.d -o.\obj\startup_gd32f30x_hd.o -I.\R
-TE\_D600_BMS_APP -ID:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include -ID:\Keil_
-v5\ARM\PACK\GigaDevice\GD32F30x_DFP\2.5.0\Device\Include --predefine="__MICROLI
-B SETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="_RTE_ SETA 1" -
--predefine="GD32F30X_HD SETA 1" --list=.\list\startup_gd32f30x_hd.lst ..\..\Lib
-rary\Firmware\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f30x_hd.s
+TE\_DC2AC_COM -ID:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include -ID:\Keil_v5\
+ARM\PACK\GigaDevice\GD32F30x_DFP\2.5.0\Device\Include --predefine="__MICROLIB S
+ETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="_RTE_ SETA 1" --pr
+edefine="GD32F30X_HD SETA 1" --list=.\list\startup_gd32f30x_hd.lst ..\..\Librar
+y\Firmware\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f30x_hd.s
 
 
 

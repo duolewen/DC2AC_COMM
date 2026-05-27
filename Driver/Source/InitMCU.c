@@ -15,6 +15,7 @@ Date       :
 #include "SpiDriver.h"
 #include "TimerDriver.h"
 #include "AdcDriver.h"
+#include "24cxx.h"
 
 /*********************************************************************
 Function name:INT8U sbInitGpioConfig(void)
