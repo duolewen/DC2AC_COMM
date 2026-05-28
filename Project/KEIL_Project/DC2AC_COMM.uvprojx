@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>GD32F30X_HD,__TARGET_FPU_VFP,ARM_MATH_CM4</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Project;..\..\Library\Firmware\CMSIS;..\..\Library\Firmware\GD32F30x_standard_peripheral\Include;..\..\APP\Include;..\..\Library\Firmware\CMSIS\GD\GD32F30x\Include;..\..\Library\Third_Party\FreeRTOSv10.1.1\FreeRTOS\Source\include;..\..\Library\Third_Party\FreeRTOSv10.1.1\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Library\Utilities;..\..\Library\DSP;..\..\Task\Include;..\..\Untility\Include;..\..\Module\Include;..\..\Config;..\..\Protocol\Include;..\..\Library\RTT;..\..\Function\Include;..\..\UID_Encryption;..\..\APP\Module;..\..\APP\BMS\Hal;..\..\APP\BMS\Core;..\..\APP\BSP\inc;..\..\Driver\Include;..\..\APP\Module\Inc;..\..\Device\Include;..\..\APP\Protocol;..\..\APP\Untility\Include;..\..\APP\AFE\Inc;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\src;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\examples\porting;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\demos;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\demos\stress</IncludePath>
+              <IncludePath>..\..\Project;..\..\Library\Firmware\CMSIS;..\..\Library\Firmware\GD32F30x_standard_peripheral\Include;..\..\APP\Include;..\..\Library\Firmware\CMSIS\GD\GD32F30x\Include;..\..\Library\Third_Party\FreeRTOSv10.1.1\FreeRTOS\Source\include;..\..\Library\Third_Party\FreeRTOSv10.1.1\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Library\Utilities;..\..\Library\DSP;..\..\Task\Include;..\..\Untility\Include;..\..\Module\Include;..\..\Config;..\..\Protocol\Include;..\..\Library\RTT;..\..\Function\Include;..\..\UID_Encryption;..\..\APP\Module;..\..\APP\BMS\Hal;..\..\APP\BMS\Core;..\..\APP\BSP\inc;..\..\Driver\Include;..\..\APP\Module\Inc;..\..\Device\Include;..\..\APP\Protocol;..\..\APP\Untility\Include;..\..\APP\AFE\Inc;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\src;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\examples\porting;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\demos;..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\demos\stress;..\..\Library\freemodbus-master\freemodbus-master\modbus\include;..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port;..\..\Library\freemodbus-master\freemodbus-master\modbus\ascii;..\..\Library\freemodbus-master\freemodbus-master\modbus\rtu;..\..\Library\freemodbus-master\freemodbus-master\modbus\tcp</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -385,6 +385,11 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\APP\Source\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>AppModbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\APP\Source\AppModbus.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -710,16 +715,6 @@
               <FileName>heap_4.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Library\Third_Party\FreeRTOSv10.1.1\FreeRTOS\Source\portable\MemMang\heap_4.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Doc</GroupName>
-          <Files>
-            <File>
-              <FileName>README.TXT</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Doc\README.TXT</FilePath>
             </File>
           </Files>
         </Group>
@@ -1610,6 +1605,91 @@
               <FileName>lvgl.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\lvgl.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ModbusRTU</GroupName>
+          <Files>
+            <File>
+              <FileName>portevent.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\portevent.c</FilePath>
+            </File>
+            <File>
+              <FileName>portserial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\portserial.c</FilePath>
+            </File>
+            <File>
+              <FileName>porttimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\porttimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbascii.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\ascii\mbascii.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfunccoils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfunccoils.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncdiag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncdiag.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncdisc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncdisc.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncfile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncfile.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncholding.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncholding.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncinput.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncinput.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbfuncother.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncother.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbutils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbutils.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbcrc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\rtu\mbcrc.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbrtu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\rtu\mbrtu.c</FilePath>
+            </File>
+            <File>
+              <FileName>mbtcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\tcp\mbtcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>mb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\mb.c</FilePath>
             </File>
           </Files>
         </Group>
