@@ -391,6 +391,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\APP\Source\AppModbus.c</FilePath>
             </File>
+            <File>
+              <FileName>DSP_M3_COMTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\APP\Source\DSP_M3_COMTask.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
