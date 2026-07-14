@@ -1246,3 +1246,7 @@ void sFirmwareVersionCheck(void)
 	}
 }
 
+void sTest_Task(void *param)
+{
+    
+}

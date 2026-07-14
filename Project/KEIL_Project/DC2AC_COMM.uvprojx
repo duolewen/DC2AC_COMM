@@ -461,11 +461,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\Device\Source\Sample.c</FilePath>
             </File>
-            <File>
-              <FileName>Led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Device\Source\Led.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

@@ -10,8 +10,6 @@
 
 #include "FWDGT.h"
 
-#include "Led.h"
-
 
 static TaskHandle_t InitTaskHandler = NULL;
 
@@ -32,8 +30,8 @@ int  main(void)
 { 
     /* configure 4 bits pre-emption priority */
     __enable_irq();
-    nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x6000);//
-    //nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x00);//
+    //nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x6000);//
+    nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x00);//
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
     
     /* init task */
@@ -48,11 +46,13 @@ int  main(void)
     }
 }    
 
+#include "UsartDriver.h"
 void sLcdTask(void * pvParameters)
 {
-	   for( ;; )
+    for( ;; )
     {
-        vTaskDelay(100);
+        vTaskDelay(1000);
+        sbUsartDriver_SendData(USART1,"1213", 4);
     }
 }
 
@@ -91,11 +91,10 @@ void init_task(void * pvParameters)
 
     /******蓝牙相关初始化END***************/
     
-    Led_set_mode(MODE_BLINK_CONT);
-    
     sStartMcu();
 
-    //xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+    xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+   
 
     if(!ret)
     {

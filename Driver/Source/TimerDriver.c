@@ -1,6 +1,4 @@
 #include "TimerDriver.h"
-#include "Led.h"
-
 uint8_t sbTimer1_Init(void)
 {
     timer_parameter_struct timer_initpara;

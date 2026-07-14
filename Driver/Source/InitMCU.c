@@ -34,17 +34,12 @@ INT8U sbInitGpioConfig(void)
     
     gpio_pin_remap_config(GPIO_SWJ_SWDPENABLE_REMAP,ENABLE);
     
-    //USART0 DEBUG
-    gpio_pin_remap_config(GPIO_USART0_REMAP,ENABLE);
-    gpio_init(GPIOB,GPIO_MODE_AF_PP,GPIO_OSPEED_50MHZ,GPIO_PIN_6);
-    gpio_init(GPIOB,GPIO_MODE_IN_FLOATING,GPIO_OSPEED_50MHZ,GPIO_PIN_7);
     
-    //USART1 BLE
+    
+    //USART1 Dsp-comm
     gpio_init(GPIOA,GPIO_MODE_AF_PP,GPIO_OSPEED_50MHZ,GPIO_PIN_2);
     gpio_init(GPIOA,GPIO_MODE_IN_FLOATING,GPIO_OSPEED_50MHZ,GPIO_PIN_3);
-    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5); //BLE AT
-    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_4); //BLE EN
-    
+    #if 0
     //USART2 PCS-COMM
     gpio_init(GPIOB,GPIO_MODE_AF_PP,GPIO_OSPEED_50MHZ,GPIO_PIN_10);
     gpio_init(GPIOB,GPIO_MODE_IN_FLOATING,GPIO_OSPEED_50MHZ,GPIO_PIN_11);
@@ -93,7 +88,7 @@ INT8U sbInitGpioConfig(void)
 
     AFE_EXIT_SHIPMODE;//ÍË³öSHIPÄ£Ê½
     sMy_DelayMs(10);
-    
+    #endif
     return 1;
 }
 

@@ -28,23 +28,22 @@ typedef struct
 }T_USART;   
 #pragma pack()
 
-static uint8_t ubUSART0TXBuff[LENGTH_MODBUS_TX];
-static uint8_t ubUSART0RXBuff[LENGTH_MODBUS_RX];
+static uint8_t ubUSART1TXBuff[LENGTH_DSPCOMM_TX];
+static uint8_t ubUSART1RXBuff[LENGTH_DSPCOMM_RX];
 
 
  uint8_t ubUSART2TXBuff[LENGTH_DSPCOMM_TX];
  uint8_t ubUSART2RXBuff[LENGTH_DSPCOMM_RX];
 
-static void sInitUsart0(void);
 static void sInitUsart1(void);
 static void sInitUsart2(void);
 
 
+
 T_USART UsartBuff[] = 
 {
-    {USART0, 9600,     ubUSART0TXBuff, ubUSART0RXBuff,  LENGTH_MODBUS_TX,          LENGTH_MODBUS_RX,            DMA0,DMA_CH3,DMA0,DMA_CH4,sInitUsart0,0,1},
-  
-    {USART2, 19200,    ubUSART2TXBuff, ubUSART2RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,           DMA0,DMA_CH1,DMA0,DMA_CH2,sInitUsart2,0,1},
+    {USART1, 9600,   ubUSART1TXBuff, ubUSART1RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,            DSPCOMM_TXDMA,DSPCOMM_TXDMA_CH,DSPCOMM_RXDMA,DSPCOMM_RXDMA_CH,sInitUsart1,0,1},
+  //  {USART2, 19200,    ubUSART2TXBuff, ubUSART2RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,           DMA0,DMA_CH1,DMA0,DMA_CH2,sInitUsart2,0,1},
 };
 
 static void sResetUsartDma(T_USART *pUsart)
@@ -255,7 +254,6 @@ static void sInitUsart2(void)
 
 uint8_t sbUsartDriver_Init(void)
 {
-    sInitUsart0();
     sInitUsart1();
     sInitUsart2();
     return 1;
@@ -263,8 +261,6 @@ uint8_t sbUsartDriver_Init(void)
 
 void sUsartDriver_Start(void)
 {
-    T_USART* pTmpUsart0 = swGetUsartBuff(USART0);
-    dma_channel_enable(pTmpUsart0->uwDmaRx, pTmpUsart0->DmaRx_CH);
     
     T_USART* pTmpUsart1 = swGetUsartBuff(USART1);
     dma_channel_enable(pTmpUsart1->uwDmaRx, pTmpUsart1->DmaRx_CH);
@@ -321,31 +317,6 @@ void sUsartDriver_Reinit(uint32_t usart_periph)
     if(pUsart->sCallBackReInit)
     {
         pUsart->sCallBackReInit();
-    }
-}
-
-
-void USART0_IRQHandler(void)
-{
-    uint32_t udwTmpUsart = USART0;
-    T_USART *pUsart = swGetUsartBuff(udwTmpUsart);
-    if(RESET != usart_interrupt_flag_get(udwTmpUsart, (usart_interrupt_flag_enum)USART_INT_FLAG_IDLE))
-    {
-        usart_flag_get(udwTmpUsart, USART_FLAG_IDLE);
-        usart_data_receive(udwTmpUsart);
-
-        dma_channel_disable(pUsart->uwDmaRx, pUsart->DmaRx_CH);
-
-        uint32_t uwLen =  pUsart->uhwRxBufSize - dma_transfer_number_get(pUsart->uwDmaRx, pUsart->DmaRx_CH);
-        if(pUsart->sCallBackRecv)
-        {
-            pUsart->sCallBackRecv(udwTmpUsart,pUsart->pRxBuf,uwLen);
-        }
-        sResetUsartDma(pUsart);
-    }
-    else
-    {
-        sResetUsartDma(pUsart);
     }
 }
 
