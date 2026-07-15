@@ -396,6 +396,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\APP\Source\DSP_M3_COMTask.c</FilePath>
             </File>
+            <File>
+              <FileName>DSP_M3_COMTaskData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\APP\Source\DSP_M3_COMTaskData.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
