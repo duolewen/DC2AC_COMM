@@ -266,96 +266,102 @@ void ResetADJvalue(void)
 	ADJValue.wPF_AdjEE = 4096;
 }
 
-void ResetSetValue(void)
+void sEepromSettingDefault(void)
 {
-	INT8U i;
+		INT8U i;
+		
+		EEData1.wTxUxMxSxEE=0xF06B;
+		EEData1.EepromVersion=cEepromVersion;
+		EEData1.bLanguage=cEnglish;
+		EEData1.bCOMAddr=1;			
+		EEData1.wStartPVVoltageEE = cPVTurnOnDefaultVolt;
+		EEData1.wStartDelayTimeEE = 60;
+		EEData1.fEepromSetting.bAutoStartEE=1;	
+		EEData1.fEepromSetting.bRS232to485Enable=1;
+		EEData1.fEepromSetting.bCountrySetFlag = 1;
+		
+		EEData32.wEtoday0k1wEE=0;
+		EEData32.dwInvertedP0K1WEE=0;
+		EEData32.dwInvTime0p5SecEE=0;  
+		EEData32.dwPV_1_TodayEE=0;
+		EEData32.dwPV_1_TotalEE=0;
+		EEData32.dwPV_2_TodayEE=0;
+		EEData32.dwPV_2_TotalEE=0;
+		EEData32.dwPVQ_TodayEE=0;
+		EEData32.dwPVQ_TotalEE=0;
+
+		bCOMMode = RS232;
+		bZigbeORBlueOWifi = Zigbee;
+		EEData1.bWireOrWireLess= bCOMMode;
+		EEData1.bZigBeOrBlueToothOrWifi=bZigbeORBlueOWifi;
+
+		EEData1.wPassword1=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');	
+		EEData1.wPassword2=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');
+		EEData1.wPassword3=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');		
+
+		EEData1.bPFCmdMemoryEE=0;
+		EEData1.bActiveRateOrderEE=0xFF; 	
+		EEData1.bReactiveRateOrderEE=0xFF; 	
+ 		EEData1.wCosPhiOrderEE=0xFFFF; 
+		EEData1.wPFModelEE=0;
 	
-	EEData1.bLanguage=1;
-	EEData1.bCOMAddr=1;			
-	EEData1.wStartPVVoltageEE = cPVTurnOnDefaultVolt;
-	EEData1.wStartDelayTimeEE = 60;
-	EEData1.fEepromSetting.bAutoStartEE=1;	
-	EEData1.fEepromSetting.bRS232to485Enable=1;
-	EEData1.fEepromSetting.bCountrySetFlag = 1;
+		EEData1.bFLrateEE= 24;
+		EEData1.fEepromSetting.bFreqDerateEnable=0;
+		
+		EEData1.wPFLineVLockin=2530;
+		EEData1.wPFLineVLockout=2415;
+		EEData1.wQvPowerLockin=20;
+		EEData1.wQvPowerLockout=5;
+		
+		EEData1.fEepromSetting.bPVSimilarSet=0;
+		EEData1.fEepromSetting.bNLineDisconnect=0;
+		ADJValue.wFreqDerateStart=5030;
+		
+		EEData1.bLVRTKFactor=20;
+		ADJValue.wLVRTFaultVolt1=250;
+		ADJValue.wLVRTFaultTimer1=2000;
+		ADJValue.wLVRTFaultVolt2=550;
+		ADJValue.wLVRTFaultTimer2=2000;
+		ADJValue.wLVRTFaultVolt3=1150;
+		ADJValue.wLVRTFaultTimer3=2000;
+		ADJValue.wLVRTFaultVolt4=1700;
+		ADJValue.wLVRTFaultTimer4=3500;
+		ADJValue.wLVRTFaultVoltHigh=2800;
+		ADJValue.wLVRTFaultTimerHigh=3500;
+		
+		EEData1.w10MinAVLimit1=cV10minFaultVoltDefault;
+		ADJValue.wShutDownCntEE=0;
 
-	EEData32.wEtoday0k1wEE=0;
-	EEData32.dwInvertedP0K1WEE=0;
-	EEData32.dwInvTime0p5SecEE=0; 
-	EEData32.dwPV_1_TodayEE=0;
-	EEData32.dwPV_1_TotalEE=0;
-	EEData32.dwPV_2_TodayEE=0;
-	EEData32.dwPV_2_TotalEE=0;
-	EEData32.dwPVQ_TodayEE=0;
-	EEData32.dwPVQ_TotalEE=0;
-
-	bCOMMode = RS232;
-	bZigbeORBlueOWifi = Zigbee;
-	EEData1.bWireOrWireLess= bCOMMode;
-	EEData1.bZigBeOrBlueToothOrWifi=bZigbeORBlueOWifi;
-
-	EEData1.wPassword1=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');
-	EEData1.wPassword2=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');
-	EEData1.wPassword3=(INT16U)(((INT16U)'X'<<8)|(INT8U)'X');		
-
-	EEData1.bPFCmdMemoryEE=0;
-	EEData1.bActiveRateOrderEE=0xFF; 	
-	EEData1.bReactiveRateOrderEE=0xFF; 	
-	EEData1.wCosPhiOrderEE=0xFFFF; 
-	EEData1.wPFModelEE=0;
-	
-	EEData1.bFLrateEE= 24;
-	EEData1.wPFLineVLockin=2530;
-	EEData1.wPFLineVLockout=2415;
-	EEData1.wQvPowerLockin=20;
-	EEData1.wQvPowerLockout=5;
-	EEData1.fEepromSetting.bFreqDerateEnable=0;
-	EEData1.fEepromSetting.bPVSimilarSet=0;
-	EEData1.fEepromSetting.bNLineDisconnect=0;
+		EEData1.fEepromSetting.bOverLoadPercent = 0; //zh 20151109
 	
 
-	EEData1.bLVRTKFactor=20;
-	ADJValue.wLVRTFaultVolt1=250;
-	ADJValue.wLVRTFaultTimer1=2000;
-	ADJValue.wLVRTFaultVolt2=550;
-	ADJValue.wLVRTFaultTimer2=2000;
-	ADJValue.wLVRTFaultVolt3=1150;
-	ADJValue.wLVRTFaultTimer3=2000;
-	ADJValue.wLVRTFaultVolt4=1700;
-	ADJValue.wLVRTFaultTimer4=3500;
-	ADJValue.wLVRTFaultVoltHigh=2800;
-	ADJValue.wLVRTFaultTimerHigh=3500;
-	
-
-	ADJValue.wFreqDerateStart=5030;
-	ADJValue.wShutDownCntEE=0;
-	EEData1.w10MinAVLimit1=cV10minFaultVoltDefault;
-	EEData1.fEepromSetting.bOverLoadPercent = 0;
-
-	for(i=0;i<cDayRecord;i++)
-	{
-		EEData32.wPowerWeekDay[i]=0; 		//clr day energy
-	}
-	for(i=0;i<cMonthRecord;i++)
-	{
-		EEData32.wPowerMonth[i]=0;		 	//clr month energy
-	}
-	for(i=0;i<cHourRecord;i++)
-	{
-		EEData32.wPowerEachHour0K1WH[i]=0;	//clr hour energy
-	}
-	for(i=0;i<cYearRecord;i++)
-	{
-		EEData32.dwPoweYear0K1WH[i]=0;		 //clr year eenergy
-	}
-	for(i=0;i < cErrMesgLen;i++)  
-	{
-		bErrorMsg[i]=0;						// clr Error message	
-	}			
-	for(i=0;i < cErrRecordLen;i++) 
-	{
-		bErrorRecord[i]=0;					// clr VF Fault message
-	}
-	sChangeSpecSet();						//Initial all parameter need to turn on the inverter
-    
-    bDistanceOnOffOrder=cTurnOn;
+		for(i=0;i<cDayRecord;i++)
+		{
+			EEData32.wPowerWeekDay[i]=0;		//clr week energy
+		}
+		for(i=0;i<cMonthRecord;i++)
+		{
+			EEData32.wPowerMonth[i]=0;			//clr month energy
+		}
+		for(i=0;i<cHourRecord;i++)
+		{
+			EEData32.wPowerEachHour0K1WH[i]=0;	//clr hour energy
+		}
+		for(i=0;i<cYearRecord;i++)
+		{
+			EEData32.dwPoweYear0K1WH[i]=0; 		//cllr year energy
+		}
+		
+		for(i=0;i < cErrMesgLen;i++)  		
+		{
+			bErrorMsg[i]=0;	 					// clr Error message
+		}			
+		for(i=0;i < cErrRecordLen;i++)		
+		{
+			bErrorRecord[i]=0; 					// clr VF Fault message
+		}
+		
+		sChangeSpecSet();						//Initial all parameter need to turn on the inverter
+		
+		bDistanceOnOffOrder=cTurnOn;
 }

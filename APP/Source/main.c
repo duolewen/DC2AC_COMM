@@ -9,6 +9,7 @@
 #include "InitMCU.h"
 
 #include "FWDGT.h"
+#include "DSP_M3_COMTask.h"
 
 
 static TaskHandle_t InitTaskHandler = NULL;
@@ -52,7 +53,7 @@ void sLcdTask(void * pvParameters)
     for( ;; )
     {
         vTaskDelay(1000);
-        sbUsartDriver_SendData(USART1,"1213", 4);
+        sbUsartDriver_SendData(USART1,"1234",4);
     }
 }
 
@@ -93,8 +94,9 @@ void init_task(void * pvParameters)
     
     sStartMcu();
 
-    xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
-   
+    xTaskCreate(sDSP_M3ComTxTask,          "sDSP_M3ComTxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+    // xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+  
 
     if(!ret)
     {

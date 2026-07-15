@@ -7,7 +7,8 @@
 
 #include "Dsp_M3_COMTask.h"
 #include "Dsp_M3_COMTaskData.h"
-
+#include "FreeRTOS.h"
+#include "task.h"
 
 
 
@@ -730,17 +731,22 @@ INT16U sCalStringSum(INT8U *bpString,INT8U bStartN,INT8U bEndN)
 	return((INT16U)wStringSum);
 }
 
-INT8U sSCIWrite(INT8U sciid,INT8U *pstart,INT16U wLength)
-{
-	return(0);
-}
+
 
 void sDSP_M3ComTxTask(void *arg)
 {
 	static INT16U wComTxTemp0;
-	
+    
+	static portTickType PreviousWakeTime;
+	const  portTickType TimeIncrement = pdMS_TO_TICKS(100); //20ms
+    
+    PreviousWakeTime = xTaskGetTickCount();
+    
+    ResetADJvalue();
+    sEepromSettingDefault();
 	while(1)
 	{   
+        vTaskDelayUntil(&PreviousWakeTime, TimeIncrement);//ÑÓÊ±100ms
 
 		if(bM3toDSPSendFinished==1)
 		{
@@ -774,13 +780,10 @@ void sDSP_M3ComTxTask(void *arg)
 				bInterTxBuffer[LenCom2DSP-2] = (INT8U)(wComTxTemp0>>8); //25
 				bInterTxBuffer[LenCom2DSP-1] = (INT8U)(wComTxTemp0&0x00FF);//26
 				bInterTxIndex=0;
-				sSCIWrite(2,bInterTxBuffer,LenCom2DSP); 
+				sbUsartDriver_SendData(USART1,bInterTxBuffer,LenCom2DSP); 
+                bM3toDSPSendFinished = 1;
 			}		
 		}
-		
-		//OSTaskStart(sDSP_M3ComTxTask_PRIO, 0, 100);
-		//OSMaskEventPend(0xFFFE);
-	
 	}
 }
 

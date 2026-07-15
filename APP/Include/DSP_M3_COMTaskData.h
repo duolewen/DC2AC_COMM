@@ -80,6 +80,13 @@
 #define cSelectInputModel1 0x02
 #define cSelectInputModel2 0x04
 
+#define cEepromVersion 01
+
+/*****************************************/
+#define 		cLangNum  	2
+#define 		cChinese	0
+#define 		cEnglish  	1
+
 #pragma pack(1)
 struct EEPROMDefaultTable1
 {
@@ -242,4 +249,9 @@ extern struct EEPROMDefaultTable3 EEData32;
 extern INT8U ubSelectFrequency5060HzFag;
 extern INT8U bDistanceOnOffOrder;
 extern INT8U bTurnOffCommand;
+
+
+
+void ResetADJvalue(void);
+void sEepromSettingDefault(void);
 #endif
