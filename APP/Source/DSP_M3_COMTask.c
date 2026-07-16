@@ -980,6 +980,33 @@ void sDSP_M3ComRxTask(void *arg)
 	}
 }
 
+
+uint8_t buffShow[128] = {0};
+void sShowTask(void * pvParameters)
+{
+    while(1)
+    {
+       
+        memset(buffShow,0,128);
+        sprintf(buffShow,"R_Curr = %d,S_Curr = %d,T_Curr = %d\r\n",wOPPhase_R_Curr,wOPPhase_S_Curr,wOPPhase_T_Curr);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+        
+        memset(buffShow,0,128);
+        sprintf(buffShow,"R_Volt = %d,S_Volt = %d,T_Volt = %d\r\n",wOPPhase_R_Volt,wOPPhase_S_Volt,wOPPhase_T_Volt);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+	
+	    memset(buffShow,0,128);
+        sprintf(buffShow,"wNTC_Tempr = %d,wINV_Tempr = %d\r\n",wNTC_Tempr,wINV_Tempr);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+	
+        memset(buffShow,0,128);
+        sprintf(buffShow,"wBus_Volt = %d,wBus_P_Volt = %d,wBus_N_Volt = %d\r\n\r\n",wBus_Volt,wBus_P_Volt,wBus_N_Volt);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+    
+        vTaskDelay(400);
+    }
+}
+
 void sClrInverterPara(void)
 {
 	wOPPhase_R_Curr = 0;

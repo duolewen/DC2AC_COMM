@@ -95,10 +95,10 @@ void init_task(void * pvParameters)
     sStartMcu();
 
     xTaskCreate(sDSP_M3ComTxTask,          "sDSP_M3ComTxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
-   xTaskCreate(sDSP_M3ComRxTask,          "sDSP_M3ComRxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+    xTaskCreate(sDSP_M3ComRxTask,          "sDSP_M3ComRxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
    
     
-    // xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+    xTaskCreate(sShowTask,          "sShowTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
   
 
     if(!ret)
