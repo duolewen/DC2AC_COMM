@@ -47,13 +47,13 @@ int  main(void)
     }
 }    
 
-#include "UsartDriver.h"
+
 void sLcdTask(void * pvParameters)
 {
-    for( ;; )
+    while(1)
     {
         vTaskDelay(1000);
-        sbUsartDriver_SendData(USART1,"1234",4);
+        sbUsartDriver_SendData(USART2,"1234",4);
     }
 }
 
@@ -95,6 +95,9 @@ void init_task(void * pvParameters)
     sStartMcu();
 
     xTaskCreate(sDSP_M3ComTxTask,          "sDSP_M3ComTxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+   xTaskCreate(sDSP_M3ComRxTask,          "sDSP_M3ComRxTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
+   
+    
     // xTaskCreate(sLcdTask,          "sLcdTask",      configMINIMAL_STACK_SIZE * 4, NULL,      E_LCD_TASK_PRIO,           &LcdTaskHandler);
   
 

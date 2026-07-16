@@ -32,8 +32,8 @@ static uint8_t ubUSART1TXBuff[LENGTH_DSPCOMM_TX];
 static uint8_t ubUSART1RXBuff[LENGTH_DSPCOMM_RX];
 
 
- uint8_t ubUSART2TXBuff[LENGTH_DSPCOMM_TX];
- uint8_t ubUSART2RXBuff[LENGTH_DSPCOMM_RX];
+ uint8_t ubUSART2TXBuff[LENGTH_MODBUS_TX];
+ uint8_t ubUSART2RXBuff[LENGTH_MODBUS_RX];
 
 static void sInitUsart1(void);
 static void sInitUsart2(void);
@@ -42,8 +42,8 @@ static void sInitUsart2(void);
 
 T_USART UsartBuff[] = 
 {
-    {USART1, 9600,   ubUSART1TXBuff, ubUSART1RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,            DSPCOMM_TXDMA,DSPCOMM_TXDMA_CH,DSPCOMM_RXDMA,DSPCOMM_RXDMA_CH,sInitUsart1,0,1},
-  //  {USART2, 19200,    ubUSART2TXBuff, ubUSART2RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,           DMA0,DMA_CH1,DMA0,DMA_CH2,sInitUsart2,0,1},
+    {USART1, 9600,   ubUSART1TXBuff, ubUSART1RXBuff,  LENGTH_DSPCOMM_TX,         LENGTH_DSPCOMM_RX,            DSPCOMM_TXDMA,   DSPCOMM_TXDMA_CH,   DSPCOMM_RXDMA,   DSPCOMM_RXDMA_CH,   sInitUsart1,0,1},
+    {USART2, 9600,   ubUSART2TXBuff, ubUSART2RXBuff,  LENGTH_MODBUS_TX,          LENGTH_MODBUS_RX,             MODBUSCOMM_TXDMA,MODBUSCOMM_TXDMA_CH,MODBUSCOMM_RXDMA,MODBUSCOMM_RXDMA_CH,sInitUsart2,0,1},
 };
 
 static void sResetUsartDma(T_USART *pUsart)
@@ -67,67 +67,6 @@ static T_USART* swGetUsartBuff(uint32_t usart_periph)
     return 0;
 }
 
-
-static void sInitUsart0(void)
-{
-    dma_parameter_struct dma_init_struct;
-    
-    uint32_t Usartx = USART0;
-    T_USART *pUsart = swGetUsartBuff(Usartx);
-    
-    rcu_periph_clock_enable(RCU_USART0);
-    rcu_periph_clock_enable(RCU_DMA0);
-    
-    usart_deinit(Usartx);
-    usart_baudrate_set(Usartx, pUsart->uwBound);
-    usart_receive_config(Usartx, USART_RECEIVE_ENABLE);
-    usart_transmit_config(Usartx, USART_TRANSMIT_ENABLE);
-    
-    dma_deinit(pUsart->uwDmaTx, pUsart->DmaTx_CH);
-    
-    dma_struct_para_init(&dma_init_struct);
-    dma_init_struct.direction = DMA_MEMORY_TO_PERIPHERAL;
-    dma_init_struct.memory_addr = (uint32_t)pUsart->pTxBuf;
-    dma_init_struct.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
-    dma_init_struct.memory_width = DMA_MEMORY_WIDTH_8BIT;
-    dma_init_struct.number = pUsart->uhwTxBufSize;
-    dma_init_struct.periph_addr = (INT32U)&USART_DATA(Usartx);
-    dma_init_struct.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
-    dma_init_struct.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
-    dma_init_struct.priority = DMA_PRIORITY_ULTRA_HIGH;
-    dma_init(pUsart->uwDmaTx, pUsart->DmaTx_CH, &dma_init_struct);
-    
-    dma_circulation_disable(pUsart->uwDmaTx, pUsart->DmaTx_CH);   
-    
-    dma_channel_disable(pUsart->uwDmaTx, pUsart->DmaTx_CH);
-    
-    dma_deinit(pUsart->uwDmaRx, pUsart->DmaRx_CH);
-    dma_struct_para_init(&dma_init_struct);
-    dma_init_struct.direction = DMA_PERIPHERAL_TO_MEMORY;
-    dma_init_struct.memory_addr = (uint32_t)pUsart->pRxBuf;
-    dma_init_struct.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
-    dma_init_struct.memory_width = DMA_MEMORY_WIDTH_8BIT;
-    dma_init_struct.number =  pUsart->uhwRxBufSize;
-    dma_init_struct.periph_addr = (INT32U)&USART_DATA(Usartx);
-    dma_init_struct.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
-    dma_init_struct.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
-    dma_init_struct.priority = DMA_PRIORITY_ULTRA_HIGH;
-    dma_init(pUsart->uwDmaRx, pUsart->DmaRx_CH, &dma_init_struct);
-    
-    dma_circulation_disable(pUsart->uwDmaRx, pUsart->DmaRx_CH); 
-    
-    usart_dma_transmit_config(Usartx, USART_TRANSMIT_DMA_ENABLE);
-    usart_dma_receive_config(Usartx, USART_RECEIVE_DMA_ENABLE);
-    
-    nvic_irq_enable(USART0_IRQn, USART0_PRE_PRI, 0);
-    
-    usart_interrupt_enable(Usartx, USART_INT_IDLE); 
-    
-    dma_channel_disable(pUsart->uwDmaRx, pUsart->DmaRx_CH);
-    dma_channel_disable(pUsart->uwDmaTx, pUsart->DmaTx_CH);
-    
-    pUsart->ubFristFlag = 1;
-}
 
 static void sInitUsart1(void)
 {

@@ -9,6 +9,7 @@
 #include "Dsp_M3_COMTaskData.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 
 
 
@@ -79,6 +80,23 @@ void sFirmwareVersionCheck(void);
 void sInterComReceiveExData(INT8U  bRxI);
 void sInterComSendExData(INT8U  bTxI);  
 extern void sInitSCI2(void);
+
+uint8_t  CbRecvBuff[LENGTH_DSPCOMM_RX] = {0};
+uint32_t CbRecvLen = 0;
+SemaphoreHandle_t DspCommBinary;
+
+void DspCommRecv_CallBack(uint32_t USARTx ,uint8_t *pData,uint32_t Len)
+{
+    BaseType_t xHigherPriorityTaskWoken;
+	
+	memset(CbRecvBuff,0,LENGTH_DSPCOMM_RX);
+	memcpy(CbRecvBuff,pData,Len);
+	CbRecvLen = Len;
+	
+	xSemaphoreGiveFromISR(DspCommBinary, &xHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);//中断调用释放信号量 
+
+}
 
 INT8U sGetFaultBit(INT32U dwFaltCode)
 {
@@ -554,7 +572,7 @@ void sDownInterCom_M3(INT8U bBufSt)
 	if(bComType == 0)
 	{
 		dwSpecLoad = ((((INT32U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]))<<16)&0xFFFF0000)
-			+ (INT32U)((INT16U)bInterRxBuffer[bBufSt+2]*256 + (INT16U)bInterRxBuffer[bBufSt+3]);
+                     + (INT32U)((INT16U)bInterRxBuffer[bBufSt+2]*256 + (INT16U)bInterRxBuffer[bBufSt+3]);
 		bBufSt += 4; //5 6 7 8
 		wStartDelayTime= (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
 		bBufSt += 2;//9  10
@@ -787,79 +805,6 @@ void sDSP_M3ComTxTask(void *arg)
 	}
 }
 
-/**
-@*File Name   : Receive  Task
-@*Function     : Communication with the Control Board
-**/
-
-#define 	cSCI2RxEnded			0x08
-
-
-
-INT8U sSCIRead(INT8U sciid,INT8U *pOutBuf)
-{ 
-    #if 0
-	SciRxStatus *pscib;
-	if(sciid == 0||sciid == 1)
-	{
-		pscib = &SCIRXB[sciid];
-		if(pscib->bRxStatus == cSciRxBufEmpty)
-			return (cSciRxBufEmpty);
-		if(pscib->bReadCnt < pscib->bRxSize)
-		{
-			*pOutBuf = *(pscib->bpRxBuffer + pscib->bReadCnt);
-			pscib->bReadCnt ++;
-			if(pscib->bRxLength > 0)
-				pscib->bRxLength --;
-			if(pscib->bRxLength == 0)
-			{
-				pscib->bRxStatus = cSciRxBufEmpty;
-				pscib->bRxCnt = 0;
-				pscib->bReadCnt =0;
-			}
-		}
-		else
-		{
-			pscib->bRxStatus = cSciRxBufEmpty;
-			pscib->bRxCnt = 0;
-			pscib->bReadCnt =0;
-			pscib->bRxLength = 0;
-		}
-		return (cSciRxRdy);
-	}
-	else if(sciid == 2)
-	{
-		pscib = &SCIRXB[sciid];
-		if(pscib->bRxStatus == cSciRxBufEmpty)
-			return (cSciRxBufEmpty);
-		if(pscib->bReadCnt < pscib->bRxSize)
-		{
-			*pOutBuf = *(pscib->bpRxBuffer + pscib->bReadCnt);
-			pscib->bReadCnt ++;
-			if(pscib->bRxLength < pscib->bRxSize)
-				pscib->bRxLength ++;
-			if(pscib->bRxLength == pscib->bRxCnt)
-			{
-				pscib->bRxStatus = cSciRxBufEmpty;
-				pscib->bRxCnt = 0;
-				pscib->bReadCnt =0;
-				pscib->bRxLength = 0;
-			}
-		}
-		else
-		{
-			pscib->bRxStatus = cSciRxBufEmpty;
-			pscib->bRxCnt = 0;
-			pscib->bReadCnt =0;
-			pscib->bRxLength = 0;
-		}
-		return (cSciRxRdy);
-	
-	}
-    #endif
-   return 1;
-}
-
 #define		cSciTxRdy				0
 #define		cSciTxBusy				1
 
@@ -934,16 +879,20 @@ void sDSP_M3ComRxTask(void *arg)
 	static INT8U bRXD;
 	static INT16U wComRxTemp0;
 	static INT8U bComFaultClrCnt=0;
-	
+    
+    DspCommBinary = xSemaphoreCreateBinary();
+    sSetUsartDmaRecvCallback(USART1 ,DspCommRecv_CallBack);
 	while(1)
 	{
-	
 		if(bDSPFlashStatus==0)
 		{
-			if(bEvent&cSCI2RxEnded)
+            BaseType_t err = xSemaphoreTake(DspCommBinary, 10);//等待返回
+            if(err == pdTRUE)
 			{
-				while((bTemp = sSCIRead(2, &bRXD))==cSciRxRdy)
+                uint32_t bRXD_index = 0;
+				while(bRXD_index < CbRecvLen)
 				{
+                    bRXD = CbRecvBuff[bRXD_index];
 					if(bInterRxIndex==0)
 					{
 						if(bRXD=='D')
@@ -957,6 +906,7 @@ void sDSP_M3ComRxTask(void *arg)
 						bInterRxBuffer[bInterRxIndex] = bRXD;
 						bInterRxIndex++;
 					}
+                    bRXD_index += 1;
 				}
 				wComRxTemp0 = (INT16U)bInterRxBuffer[LenDSP2Com-2]*256 +(INT16U)bInterRxBuffer[LenDSP2Com-1];//27,28
 				if(wComRxTemp0 == (sCalStringSum(bInterRxBuffer, 0, (LenDSP2Com-3))))
@@ -1028,7 +978,6 @@ void sDSP_M3ComRxTask(void *arg)
 		}
 		//bEvent=OSTaskPend();
 	}
-
 }
 
 void sClrInverterPara(void)
