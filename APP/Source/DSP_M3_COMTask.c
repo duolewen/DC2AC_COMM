@@ -563,6 +563,9 @@ INT8U bCheckHardware;
 INT16U wLoadPer100;
 INT16U uwScope[45];
 INT8U ubDSPControlFirmware[10] = {'V','D',':','0','1','.','0','0','0','0'} ;
+
+uint16_t DC3_V  = 0;
+uint16_t L3_DCI = 0;
 void sDownInterCom_M3(INT8U bBufSt)
 {
 	INT8U bComType;
@@ -652,6 +655,12 @@ void sDownInterCom_M3(INT8U bBufSt)
 		bBufSt+=1;//5
 		wLEDDisplayFlag = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
 		bBufSt+=2;//6 7
+        DC3_V = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
+		bBufSt+=2;//6 7
+        L3_DCI = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
+		bBufSt+=2;//6 7
+       
+        /*
 		bBufSt++;//8
 		bBufSt++;//9
 		bBufSt++;//10
@@ -659,6 +668,7 @@ void sDownInterCom_M3(INT8U bBufSt)
 		bBufSt+=2;//13 14
 		bBufSt+=2;//15 16
 		bBufSt+=2;//17 18
+        */
 	}
 	else if(bComType==5)
 	{
@@ -996,14 +1006,24 @@ void sShowTask(void * pvParameters)
         sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
 	
 	    memset(buffShow,0,128);
-        sprintf(buffShow,"wNTC_Tempr = %d,wINV_Tempr = %d\r\n",wNTC_Tempr,wINV_Tempr);
+        sprintf(buffShow,"wNTC_Tempr = %d,GFCI.V = %d\r\n",wNTC_Tempr,wINV_Tempr);
         sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
 	
         memset(buffShow,0,128);
-        sprintf(buffShow,"wBus_Volt = %d,wBus_P_Volt = %d,wBus_N_Volt = %d\r\n\r\n",wBus_Volt,wBus_P_Volt,wBus_N_Volt);
+        sprintf(buffShow,"wBus_Volt = %d,wBus_P_Volt = %d,wBus_N_Volt = %d\r\n",wBus_Volt,wBus_P_Volt,wBus_N_Volt);
         sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
-    
+        
+        memset(buffShow,0,128);
+        sprintf(buffShow,"DC1_V = %d,DC2_V = %d, DC3_V=%d\r\n",wPV_1_Volt,wPV_2_Volt,DC3_V);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+        
+        memset(buffShow,0,128);
+        sprintf(buffShow,"L1_DCI = %d,L2_DCI = %d,L3_DCI=%d\r\n\r\n",wPV_1_Curr,wPV_2_Curr,L3_DCI);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
+        
+        
         vTaskDelay(400);
+        
     }
 }
 

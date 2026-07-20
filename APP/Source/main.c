@@ -3,11 +3,8 @@
 #include "task.h"
 #include "semphr.h"
 #include <stdio.h>
-#include "24cxx.h"
-
 #include "FLASH.h"
 #include "InitMCU.h"
-
 #include "FWDGT.h"
 #include "DSP_M3_COMTask.h"
 

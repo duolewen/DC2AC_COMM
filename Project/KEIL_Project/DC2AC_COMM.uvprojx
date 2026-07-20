@@ -452,11 +452,6 @@
           <GroupName>Device</GroupName>
           <Files>
             <File>
-              <FileName>24cxx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Device\Source\24cxx.c</FilePath>
-            </File>
-            <File>
               <FileName>KeyDet.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Device\Source\KeyDet.c</FilePath>

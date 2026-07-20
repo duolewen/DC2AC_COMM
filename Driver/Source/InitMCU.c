@@ -15,7 +15,6 @@ Date       :
 #include "SpiDriver.h"
 #include "TimerDriver.h"
 #include "AdcDriver.h"
-#include "24cxx.h"
 
 /*********************************************************************
 Function name:INT8U sbInitGpioConfig(void)
@@ -116,11 +115,6 @@ INT8U sbInitMcu(void)
     sbSPIDriver_Init();
     sbAdcDriver_Init();
     sbTimer1_Init();
-    
-  
-    AT24CXX_Init();
-
-    
     
 //#if(USER_WATCHDOG_ABLE == 1)
 //	sIWDG_Init();
