@@ -555,6 +555,7 @@ INT16U wPFNumOrder;
 INT32U dwOP_ReActPowerSec;
 INT16U wBus_P_Volt;
 INT16U wBus_N_Volt;
+INT16U wFreq;//频率
 INT8U wReConnectConFlag;
 INT8U bDeratingModeFlag;
 INT16U wShutDownFlag;
@@ -566,6 +567,7 @@ INT8U ubDSPControlFirmware[10] = {'V','D',':','0','1','.','0','0','0','0'} ;
 
 uint16_t DC3_V  = 0;
 uint16_t L3_DCI = 0;
+uint16_t GFCI_Curr = 0;
 void sDownInterCom_M3(INT8U bBufSt)
 {
 	INT8U bComType;
@@ -653,13 +655,24 @@ void sDownInterCom_M3(INT8U bBufSt)
 	{
 		bPVInputFlag=bInterRxBuffer[bBufSt];	//5
 		bBufSt+=1;//5
+        
 		wLEDDisplayFlag = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
 		bBufSt+=2;//6 7
+        
+        bBufSt+=1;// 再跳一个
+        
+        wFreq = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
+		bBufSt+=2;//6 7
+        
         DC3_V = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
 		bBufSt+=2;//6 7
+        
         L3_DCI = (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
 		bBufSt+=2;//6 7
-       
+        
+        GFCI_Curr= (INT16U)((INT16U)bInterRxBuffer[bBufSt]*256 + (INT16U)bInterRxBuffer[bBufSt+1]);
+		bBufSt+= 2;//6 7
+        
         /*
 		bBufSt++;//8
 		bBufSt++;//9
@@ -878,8 +891,7 @@ INT8U sFaultCHK(void)
 		return(cTrue);
 	}
 }
-#define cFaultStatus				3
-#define cFlashStatus				4
+
 INT8U   bFaultMemory;
 void sDSP_M3ComRxTask(void *arg)
 {
@@ -1018,9 +1030,12 @@ void sShowTask(void * pvParameters)
         sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
         
         memset(buffShow,0,128);
-        sprintf(buffShow,"L1_DCI = %d,L2_DCI = %d,L3_DCI=%d\r\n\r\n",wPV_1_Curr,wPV_2_Curr,L3_DCI);
+        sprintf(buffShow,"L1_DCI = %d,L2_DCI = %d,L3_DCI=%d\r\n",wPV_1_Curr,wPV_2_Curr,L3_DCI);
         sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
         
+        memset(buffShow,0,128);
+        sprintf(buffShow,"Freq = %d,GFCI_Curr = %d\r\n\r\n",wFreq,GFCI_Curr);
+        sbUsartDriver_SendData(USART2,buffShow,strlen(buffShow));
         
         vTaskDelay(400);
         

@@ -387,11 +387,6 @@
               <FilePath>..\..\APP\Source\main.c</FilePath>
             </File>
             <File>
-              <FileName>AppModbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\APP\Source\AppModbus.c</FilePath>
-            </File>
-            <File>
               <FileName>DSP_M3_COMTask.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\APP\Source\DSP_M3_COMTask.c</FilePath>
@@ -400,6 +395,16 @@
               <FileName>DSP_M3_COMTaskData.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\APP\Source\DSP_M3_COMTaskData.c</FilePath>
+            </File>
+            <File>
+              <FileName>Exter_CommTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\APP\Source\Exter_CommTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>Exter_CommTaskData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\APP\Source\Exter_CommTaskData.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1605,91 +1610,6 @@
               <FileName>lvgl.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Library\lvgl-release-v8.3\lvgl-release-v8.3\lvgl.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ModbusRTU</GroupName>
-          <Files>
-            <File>
-              <FileName>portevent.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\portevent.c</FilePath>
-            </File>
-            <File>
-              <FileName>portserial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\portserial.c</FilePath>
-            </File>
-            <File>
-              <FileName>porttimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\demo\BARE\port\porttimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbascii.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\ascii\mbascii.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfunccoils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfunccoils.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncdiag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncdiag.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncdisc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncdisc.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncfile.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncfile.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncholding.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncholding.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncinput.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncinput.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbfuncother.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbfuncother.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbutils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\functions\mbutils.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbcrc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\rtu\mbcrc.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbrtu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\rtu\mbrtu.c</FilePath>
-            </File>
-            <File>
-              <FileName>mbtcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\tcp\mbtcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>mb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Library\freemodbus-master\freemodbus-master\modbus\mb.c</FilePath>
             </File>
           </Files>
         </Group>

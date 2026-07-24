@@ -3,6 +3,9 @@
 
 #include "GlobalDef.h"
 
+#define cFaultStatus				3
+#define cFlashStatus				4
+
 #define	cHourRecord		16
 #define	cDayRecord		7
 #define	cMonthRecord	12
