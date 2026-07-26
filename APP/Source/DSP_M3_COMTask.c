@@ -16,25 +16,9 @@
 
 
 
-#define	mErrorMsgBolck		0x08
-
-#define	mErrorRecord		0x20
-
-#define 	cModbusVersion 	100  //for the first version 20150531
 
 
 
-struct RTCDateTime
-{
-	INT8U bSeconds;
-	INT8U bMinutes;
-	INT8U bHours;
-	INT8U bDays;			// 1~31
-	INT8U bMonths;			// 1~12
-	INT8U bYears;			// 0~99, 0 for 2000
-	INT8U bWeekdays;
-	INT8S bTimeZone;		// UTC -12~+13
-};
 
 
 struct RTCDateTime sysTime;
@@ -836,8 +820,6 @@ void sDSP_M3ComTxTask(void *arg)
 
 #define 	LenDSP2Com 	21
 
-#define	mEnegyBlock1		0x04
-#define cInvterterStatus			1
 
 #define cBComFault				0x00000001//error:10  communicatiion fault    			1 
 

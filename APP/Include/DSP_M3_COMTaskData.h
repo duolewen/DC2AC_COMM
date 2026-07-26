@@ -90,6 +90,30 @@
 #define 		cChinese	0
 #define 		cEnglish  	1
 
+#define 	cModbusVersion 	100  //for the first version 20150531
+
+#define	mErrorMsgBolck		0x08
+#define	mErrorRecord		0x20
+#define	mEnegyBlock1		0x04
+
+#define	mAdjustBlock		0x10
+
+#define cInvterterStatus    1
+
+#pragma pack(1)
+struct RTCDateTime
+{
+	INT8U bSeconds;
+	INT8U bMinutes;
+	INT8U bHours;
+	INT8U bDays;			// 1~31
+	INT8U bMonths;			// 1~12
+	INT8U bYears;			// 0~99, 0 for 2000
+	INT8U bWeekdays;
+	INT8S bTimeZone;		// UTC -12~+13
+};
+#pragma pack()
+
 #pragma pack(1)
 struct EEPROMDefaultTable1
 {
@@ -254,7 +278,9 @@ extern INT8U bDistanceOnOffOrder;
 extern INT8U bTurnOffCommand;
 
 
-
+void ResetSetValue(void);
 void ResetADJvalue(void);
 void sEepromSettingDefault(void);
+void sChangeSpecSet(void);
+INT8U sCHKModelType(INT16U chkV);
 #endif
